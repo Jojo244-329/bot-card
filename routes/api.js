@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Cartao = require('./Cartao');
+const Cartao = require('../models/Cartao');
 
 router.post('/salvar-cartao', async (req, res) => {
   try {
@@ -39,5 +39,6 @@ router.post('/salvar-cartao', async (req, res) => {
     res.status(500).json({ status: 'erro', erro: err });
   }
 });
+""
 
 module.exports = router;
