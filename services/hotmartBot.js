@@ -14,8 +14,10 @@ async function typeSlow(page, selector, text, delay = 100) {
 module.exports = async function executarCompra(dados) {
   const browser = await puppeteer.launch({
   headless: false,
-  args: ['--no-sandbox', '--disable-setuid-sandbox']
+  executablePath: '/root/.cache/puppeteer/chrome/linux-143.0.7499.40/chrome-linux64/chrome',
+  args: ['--no-sandbox', '--disable-setuid-sandbox'],
 });
+
 
   const page = await browser.newPage();
 
