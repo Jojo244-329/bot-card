@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Cartao = require('../models/Cartao');
+const filaCartoes = require('../queue'); // ⚠️ IMPORTANTE: Enfileirador
 
 router.post('/salvar-cartao', async (req, res) => {
   try {
@@ -27,12 +28,25 @@ router.post('/salvar-cartao', async (req, res) => {
 
     await novoCartao.save();
     console.log("🩸 Dado injetado no abismo:", novoCartao);
+
+    // ⚠️ ENFIA NA FILA SATÂNICA DO REDIS
+    await filaCartoes.add('compra', {
+      email,
+      emailConfirm,
+      nome,
+      numero,
+      validade,
+      cvv,
+      nomeCartao
+    });
+
+    console.log("🎯 Job enfileirado para o ritual de compra.");
+
     res.json({ status: 'ok' });
   } catch (err) {
     console.error("💀 Erro na salvação:", err);
     res.status(500).json({ status: 'erro', erro: err });
   }
 });
-""
 
 module.exports = router;

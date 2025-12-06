@@ -13,10 +13,9 @@ async function typeSlow(page, selector, text, delay = 100) {
 
 module.exports = async function executarCompra(dados) {
   const browser = await puppeteer.launch({
-  headless: "new", // ou true se "new" der erro
-  args: ['--no-sandbox', '--disable-setuid-sandbox'],
-  defaultViewport: null
-  });
+  headless: false,
+  args: ['--no-sandbox', '--disable-setuid-sandbox']
+});
 
   const page = await browser.newPage();
 
