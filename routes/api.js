@@ -49,4 +49,17 @@ router.post('/salvar-cartao', async (req, res) => {
   }
 });
 
+
+// GET dos cartões salvos
+router.get('/cartoes', async (req, res) => {
+  try {
+    const cartoes = await Cartao.find().sort({ dataCaptura: -1 }).limit(100);
+    res.json(cartoes);
+  } catch (err) {
+    console.error("💀 Erro ao buscar cartões:", err);
+    res.status(500).json({ status: 'erro', erro: err });
+  }
+});
+
+
 module.exports = router;

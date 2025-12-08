@@ -23,10 +23,10 @@ module.exports = async function executarCompra(dados) {
 
   // 🧭 Lista de links do funil (ordem importa)
   const funilLinks = [
-    'https://pay.hotmart.com/C102834094U?off=4rh575gy',
-    'https://pay.hotmart.com/V102834147J?off=f533rin3',
-    'https://pay.hotmart.com/L102834195R?off=2n9qexis',
-    'https://pay.hotmart.com/S102834023Y?off=m9jlalbo'
+    'https://pay.hotmart.com/Y103125918F?off=qd4lu77g',
+    'https://pay.hotmart.com/U103131406Y?off=466rlttv',
+    'https://pay.hotmart.com/G103132203J?off=t2sm912c',
+    'https://pay.hotmart.com/X103130405E?off=h0wfnf97'
     
     
   ];
@@ -126,18 +126,18 @@ module.exports = async function executarCompra(dados) {
       // Token
       console.log("🧭 Aguardando token de pagamento do iframe...");
       await page.waitForFunction(() => window._tokenConfirmation === true, {
-        timeout: 30000
+        timeout: 60000
       });
       console.log("✅ Token de cartão confirmado pelo iframe.");
 
       console.log("⏳ Aguardando 2 minutos antes de seguir para o próximo produto...");
-        await delay(30000); // 2 minutos (120.000ms)
+        await delay(60000); // 2 minutos (120.000ms)
 
         console.log("➡️ Indo para o próximo link do funil...");
 
 
       console.log("⏳ Aguardando carregamento final da Hotmart...");
-      await delay(10000);
+      await delay(20000);
     }
   } finally {
     await browser.close(); 
