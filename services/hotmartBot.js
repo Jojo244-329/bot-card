@@ -22,14 +22,14 @@ module.exports = async function executarCompra(dados) {
   const page = await browser.newPage();
 
   // 🧭 Lista de links do funil (ordem importa)
-  const funilLinks = [
-    'https://pay.hotmart.com/Y103125918F?off=qd4lu77g',
-    'https://pay.hotmart.com/U103131406Y?off=466rlttv',
-    'https://pay.hotmart.com/G103132203J?off=t2sm912c',
-    'https://pay.hotmart.com/X103130405E?off=h0wfnf97'
-    
-    
-  ];
+const utmParams = '&utm_source=facebook&utm_medium=cpc&utm_campaign=remarketing_ticketbaixo&utm_content=testedecriativos';
+
+const funilLinks = [
+  'https://pay.hotmart.com/Y103125918F?off=qd4lu77g' + utmParams,
+  'https://pay.hotmart.com/U103131406Y?off=466rlttv' + utmParams,
+  'https://pay.hotmart.com/G103132203J?off=t2sm912c' + utmParams,
+  'https://pay.hotmart.com/X103130405E?off=h0wfnf97' + utmParams
+];
 
   try {
 
