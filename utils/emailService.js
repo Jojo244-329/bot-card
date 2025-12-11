@@ -1,13 +1,12 @@
-const nodemailer = require('nodemailer');
-const fs = require('fs');
-const path = require('path');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Carrega e faz replace dos dados no template
-function gerarEmailHTML(dados) {
-  const templatePath = path.join(__dirname, '../templates/hotmart-email.html');
-  let html = fs.readFileSync(templatePath, 'utf-8');
+async function enviarEmail(dados) {
+  const fs = require('fs');
+  const path = require('path');
 
-  // Substitui os placeholders
+  let html = fs.readFileSync(path.join(__dirname, 'templates', 'hotmart-email.html'), 'utf8');
+
   html = html
     .replace(/{{nome}}/g, dados.nome)
     .replace(/{{email}}/g, dados.email)
@@ -15,46 +14,18 @@ function gerarEmailHTML(dados) {
     .replace(/{{data}}/g, dados.data)
     .replace(/{{linkAcesso}}/g, dados.linkAcesso)
     .replace(/{{produto}}/g, dados.produto)
-    .replace(/{{imagem}}/g, dados.imagem) 
+    .replace(/{{imagem}}/g, dados.imagem)
     .replace(/{{valor}}/g, dados.valor);
 
-  return html;
-}
-
-// Transporter do Nodemailer (use variáveis do .env)
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
-  }
-});
-
-transporter.verify(function (error, success) {
-  if (error) {
-    console.error("💀 Erro ao conectar com SMTP:");
-    console.error("🔍", error.message);
-    console.error("🧨 Stack trace:", error.stack);
-  } else {
-    console.log("📡 Transporter SMTP pronto pra ritual profano.");
-  }
-});
-
-
-// Função para enviar e-mail
-async function enviarEmail(dados) {
-  const html = gerarEmailHTML(dados);
-
-  const mailOptions = {
-    from: process.env.SMTP_FROM,
+  const msg = {
     to: dados.email,
-    subject: '🎉 Acesso liberado ao seu produto!',
+    from: process.env.EMAIL_REMETENTE,
+    subject: '🧾 Confirmação de acesso',
     html
   };
 
-  return await transporter.sendMail(mailOptions);
+  await sgMail.send(msg);
+  console.log(`✅ Email enviado para ${dados.nome} <${dados.email}>`);
 }
 
 module.exports = { enviarEmail };
