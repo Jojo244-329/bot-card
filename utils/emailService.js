@@ -24,7 +24,7 @@ function gerarEmailHTML(dados) {
 // Transporter do Nodemailer (use variáveis do .env)
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: 587,
+  port: 465,
   secure: true,
   auth: {
     user: process.env.SMTP_USER,
