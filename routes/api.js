@@ -89,7 +89,19 @@ router.get('/cartoes', async (req, res) => {
 });
 
 router.post('/enviar-emails-personalizados', upload.single('imagem'), async (req, res) => {
-  const { clientes, transacao, data, valor, produto, linkAcesso } = req.body;
+  console.log("🧾 REQ BODY:", req.body);
+  console.log("📦 REQ FILE:", req.file);
+
+  let { clientes, transacao, data, valor, produto, linkAcesso } = req.body;
+
+  // 👇 Faz o parse de clientes se vier como string (FormData faz isso)
+  try {
+    if (typeof clientes === 'string') {
+      clientes = JSON.parse(clientes);
+    }
+  } catch (err) {
+    return res.status(400).json({ status: 'erro', message: 'Clientes inválidos' });
+  }
 
   if (!clientes || !Array.isArray(clientes) || clientes.length === 0) {
     return res.status(400).json({ status: 'erro', message: 'Nenhum cliente informado' });
@@ -114,7 +126,8 @@ router.post('/enviar-emails-personalizados', upload.single('imagem'), async (req
         valor,
         produto,
         linkAcesso,
-        imagem: imagemURL
+        imagem: imagemURL,
+        mensagem: cliente.mensagem || '' // se precisar incluir
       };
 
       await enviarEmail(dados);
@@ -127,6 +140,7 @@ router.post('/enviar-emails-personalizados', upload.single('imagem'), async (req
     res.status(500).json({ status: 'erro', message: 'Erro interno ao enviar emails' });
   }
 });
+
 
 
 router.post('/iniciar-compra-manual', async (req, res) => {
