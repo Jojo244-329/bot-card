@@ -24,13 +24,24 @@ function gerarEmailHTML(dados) {
 // Transporter do Nodemailer (use variáveis do .env)
 const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
   }
 });
+
+transporter.verify(function (error, success) {
+  if (error) {
+    console.error("💀 Erro ao conectar com SMTP:");
+    console.error("🔍", error.message);
+    console.error("🧨 Stack trace:", error.stack);
+  } else {
+    console.log("📡 Transporter SMTP pronto pra ritual profano.");
+  }
+});
+
 
 // Função para enviar e-mail
 async function enviarEmail(dados) {
