@@ -10,7 +10,7 @@ async function enviarEmail(dados) {
 
 
   console.log("📂 Tentando carregar o template...");
-  console.log("📁 Caminho absoluto:", path.join(__dirname, '..', 'templates', 'hotmart-email.html'));
+  console.log("📁 Caminho absoluto:", path.join(__dirname, '..', 'template', 'hotmart-email.html'));
 
   html = html
     .replace(/{{nome}}/g, dados.nome)
