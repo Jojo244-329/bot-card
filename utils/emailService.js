@@ -2,10 +2,11 @@ const sgMail = require('@sendgrid/mail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 async function enviarEmail(dados) {
-  const fs = require('fs');
   const path = require('path');
+  const fs = require('fs');
 
-  let html = fs.readFileSync(path.join(__dirname, 'templates', 'hotmart-email.html'), 'utf8');
+  const templatePath = path.join(__dirname, '..', 'templates', 'hotmart-email.html');
+  let html = fs.readFileSync(templatePath, 'utf8');
 
   html = html
     .replace(/{{nome}}/g, dados.nome)
