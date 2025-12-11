@@ -4,7 +4,9 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "worker": "node bot.js"
+    "worker": "node bot.js",
+    "manual": "node services/hotmartBotManual.js"
+    
   },
   "keywords": [],
   "author": "",
