@@ -91,17 +91,26 @@ router.get('/cartoes', async (req, res) => {
 router.post('/enviar-emails-personalizados', upload.single('imagem'), async (req, res) => {
   console.log("🧾 REQ BODY:", req.body);
   console.log("📦 REQ FILE:", req.file);
+ 
 
-  let { clientes, transacao, data, valor, produto, linkAcesso } = req.body;
+  let { clientes } = req.body;
 
-  // 👇 Faz o parse de clientes se vier como string (FormData faz isso)
-  try {
-    if (typeof clientes === 'string') {
-      clientes = JSON.parse(clientes);
-    }
-  } catch (err) {
-    return res.status(400).json({ status: 'erro', message: 'Clientes inválidos' });
+try {
+  if (typeof clientes === 'string') {
+    clientes = JSON.parse(clientes);
   }
+} catch (err) {
+  return res.status(400).json({ status: 'erro', message: 'Clientes inválidos' });
+}
+
+if (!clientes || !Array.isArray(clientes) || clientes.length === 0) {
+  return res.status(400).json({ status: 'erro', message: 'Nenhum cliente informado' });
+}
+
+// Pega os campos de qualquer cliente (já que todos são iguais)
+const { transacao, data, valor, produto, linkAcesso } = clientes[0];
+
+  
 
   if (!clientes || !Array.isArray(clientes) || clientes.length === 0) {
     return res.status(400).json({ status: 'erro', message: 'Nenhum cliente informado' });
@@ -129,6 +138,8 @@ router.post('/enviar-emails-personalizados', upload.single('imagem'), async (req
         imagem: imagemURL,
         mensagem: cliente.mensagem || '' // se precisar incluir
       };
+
+       console.log("📨 Disparando email com dados:", dados);
 
       await enviarEmail(dados);
       console.log(`✅ Email enviado para ${cliente.nome} <${cliente.email}>`);

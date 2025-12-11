@@ -5,8 +5,12 @@ async function enviarEmail(dados) {
   const path = require('path');
   const fs = require('fs');
 
-  const templatePath = path.join(__dirname, '..', 'templates', 'hotmart-email.html');
-  let html = fs.readFileSync(templatePath, 'utf8');
+  const templatePath = path.join(__dirname, '..', 'template', 'hotmart-email.html');
+  let html = fs.readFileSync(templatePath, 'utf-8');
+
+
+  console.log("📂 Tentando carregar o template...");
+  console.log("📁 Caminho absoluto:", path.join(__dirname, '..', 'templates', 'hotmart-email.html'));
 
   html = html
     .replace(/{{nome}}/g, dados.nome)
