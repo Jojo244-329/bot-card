@@ -80,7 +80,7 @@ router.get('/cartoes', async (req, res) => {
   }
 });
 
-router.post('/enviar-emails-personalizados', upload.single('imagem'), async (req, res) => {
+router.post('/enviar-emails-personalizados', async (req, res) => {
   console.log("🧾 REQ BODY:", req.body);
   console.log("📦 REQ FILE:", req.file);
  
@@ -112,10 +112,7 @@ const { transacao, data, valor, produto, linkAcesso } = clientes[0];
     return res.status(400).json({ status: 'erro', message: 'Campos obrigatórios ausentes' });
   }
 
-  let imagemURL = `${process.env.HOST_URL}/imagens/default.png`;
-  if (req.file) {
-    imagemURL = `${process.env.HOST_URL}/uploads/${req.file.filename}`;
-  }
+  let imagemURL = clientes[0].imagem || `${process.env.HOST_URL}/imagens/default.png`;
 
   try {
     for (const cliente of clientes) {
