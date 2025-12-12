@@ -112,7 +112,6 @@ const { transacao, data, valor, produto, linkAcesso } = clientes[0];
     return res.status(400).json({ status: 'erro', message: 'Campos obrigatórios ausentes' });
   }
 
-  let imagemURL = clientes[0].imagem || `${process.env.HOST_URL}/imagens/default.png`;
 
   try {
     for (const cliente of clientes) {
@@ -124,7 +123,7 @@ const { transacao, data, valor, produto, linkAcesso } = clientes[0];
         valor,
         produto,
         linkAcesso,
-        imagem: imagemURL,
+        imagem: cliente.imagem || `${process.env.HOST_URL}/imagens/default.png`,
         mensagem: cliente.mensagem || '' // se precisar incluir
       };
 
